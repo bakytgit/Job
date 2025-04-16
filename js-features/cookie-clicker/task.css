@@ -1,0 +1,15 @@
+<style>
+  #cookie {
+    width: 100px;
+    height: 100px;
+    background-image: url('C:\Users\bkuruchbekov\Downloads\сайт\cookie.png');
+    background-size: cover;
+    cursor: pointer;
+    margin: 20px;
+  }
+
+  #counter {
+    font-size: 2em;
+    margin-left: 20px;
+  }
+</style>
