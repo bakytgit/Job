@@ -2,33 +2,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const newTaskInput = document.getElementById('newTaskInput');
     const taskList = document.getElementById('taskList');
 
-    newTaskInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter' && newTaskInput.value.trim() !== '') {
-            addTask(newTaskInput.value.trim());
-            newTaskInput.value = '';
-        }
-    });
+    if (newTaskInput) {
+        newTaskInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && newTaskInput.value.trim() !== '') {
+                addTask(newTaskInput.value.trim());
+                newTaskInput.value = '';
+            }
+        });
+    } else {
+        console.error("Элемент с id 'newTaskInput' не найден.");
+    }
 
     function addTask(taskText) {
-        const taskDiv = document.createElement('div');
-        taskDiv.classList.add('task');
+        const taskHTML = `
+            <div class="task">
+              <div class="task__title">
+                ${taskText}
+              </div>
+              <a href="#" class="task__remove">&times;</a>
+            </div>
+        `;
+        taskList.insertAdjacentHTML('afterbegin', taskHTML);
 
-        const titleDiv = document.createElement('div');
-        titleDiv.classList.add('task__title');
-        titleDiv.textContent = taskText;
-
-        const removeLink = document.createElement('a');
-        removeLink.href = '#';
-        removeLink.classList.add('task__remove');
-        removeLink.textContent = '×';
-
-        removeLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            taskDiv.remove();
-        });
-
-        taskDiv.appendChild(titleDiv);
-        taskDiv.appendChild(removeLink);
-        taskList.appendChild(taskDiv);
+        // Находим добавленный элемент крестика и добавляем обработчик
+        const removeButton = taskList.querySelector('.task:first-child .task__remove');
+        if (removeButton) {
+            removeButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                this.closest('.task').remove();
+            });
+        } else {
+            console.error("Не удалось найти кнопку удаления для новой задачи.");
+        }
     }
 });
