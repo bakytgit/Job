@@ -1,16 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     const newTaskInput = document.getElementById('newTaskInput');
+    const addTaskButton = document.getElementById('addTaskButton');
     const taskList = document.getElementById('taskList');
 
-    if (newTaskInput) {
-        newTaskInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter' && newTaskInput.value.trim() !== '') {
+    if (addTaskButton) {
+        addTaskButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            if (newTaskInput && newTaskInput.value.trim() !== '') {
                 addTask(newTaskInput.value.trim());
                 newTaskInput.value = '';
+            } else if (!newTaskInput) {
+                console.error("Элемент с id 'newTaskInput' не найден.");
+            } else {
+                console.warn("Поле ввода новой задачи пустое.");
             }
         });
     } else {
-        console.error("Элемент с id 'newTaskInput' не найден.");
+        console.error("Элемент с id 'addTaskButton' не найден.");
     }
 
     function addTask(taskText) {
@@ -24,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         taskList.insertAdjacentHTML('afterbegin', taskHTML);
 
-        // Находим добавленный элемент крестика и добавляем обработчик
         const removeButton = taskList.querySelector('.task:first-child .task__remove');
         if (removeButton) {
             removeButton.addEventListener('click', function(event) {
